@@ -16,12 +16,23 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.amber,
       resizeToAvoidBottomInset: true,
-      body: Container(
-        decoration: BoxDecoration(),
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: [Text("hallo")],
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Center(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
+            child: Column(
+              children: [
+                Positioned(
+                  child: Image.asset("assets/images/logo.png"),
+                ),
+              ],
+            ),
           ),
         ),
       ),
