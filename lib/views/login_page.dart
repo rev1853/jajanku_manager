@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.amber,
       resizeToAvoidBottomInset: true,
       body: Container(
+        decoration: BoxDecoration(),
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
