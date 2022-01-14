@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
-            children: [],
+            children: [Text("hallo")],
           ),
         ),
       ),
