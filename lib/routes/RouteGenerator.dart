@@ -10,7 +10,7 @@ class RouteGenerator {
       case "/login":
         return MaterialPageRoute(
           builder: (_) => LoginPage(
-            title: arg['title'],
+            title: arg['title'] ?? "Login",
           ),
         );
         break;
@@ -18,7 +18,7 @@ class RouteGenerator {
       default:
         return MaterialPageRoute(
           builder: (_) => HomePage(
-            title: arg['title'],
+            title: arg['title'] ?? "Dashboard",
           ),
         );
     }
