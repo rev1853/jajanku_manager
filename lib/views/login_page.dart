@@ -165,7 +165,6 @@ class _LoginPageState extends State<LoginPage> implements LoginViewContract {
   @override
   void onLoginSuccess(Map loginData) {
     // TODO: implement onLoginSuccess
-
     if (loginData['login_status']) {
       showDialog(
         context: context,
