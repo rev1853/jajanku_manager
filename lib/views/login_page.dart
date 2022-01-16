@@ -2,28 +2,21 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jajanku_manager/constants/ColorConstant.dart';
 import 'package:jajanku_manager/contracts/LoginViewContract.dart';
 import 'package:jajanku_manager/presenters/LoginPresenter.dart';
 import 'package:jajanku_manager/widgets/alert.dart';
 import 'package:jajanku_manager/widgets/login_text_field.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key? key, required this.title}) : super(key: key);
-  String title;
-
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> implements LoginViewContract {
+class LoginPage extends StatelessWidget implements LoginViewContract {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  late LoginPresenter _loginpresenter;
+  final LoginPresenter loginpresenter = Get.find<LoginPresenter>();
 
-  _LoginPageState() {
-    _loginpresenter = LoginPresenter(this);
+  LoginPage() {
+    loginpresenter.loginviewcontract = this;
   }
 
   @override
@@ -41,12 +34,9 @@ class _LoginPageState extends State<LoginPage> implements LoginViewContract {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Positioned(
-                      child: Image.asset(
-                        "assets/images/logo.png",
-                        width: 100,
-                      ),
-                      top: -20,
+                    Image.asset(
+                      "assets/images/logo.png",
+                      width: 100,
                     ),
                     SizedBox(
                       height: 30,
@@ -84,15 +74,12 @@ class _LoginPageState extends State<LoginPage> implements LoginViewContract {
                     ElevatedButton(
                       onPressed: () {
                         if (!_formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Mohon isi form dengan benar"),
-                            ),
-                          );
+                          Get.snackbar("Form tidak sesuai",
+                              "Mohon isi form dengan benar");
                         } else {
                           String email = _emailController.text;
                           String password = _passwordController.text;
-                          _loginpresenter.login(email, password);
+                          loginpresenter.login(email, password);
                         }
                       },
                       child: Text(
@@ -125,16 +112,11 @@ class _LoginPageState extends State<LoginPage> implements LoginViewContract {
                       ),
                       onPressed: () {
                         // show the dialog
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return InformationAlert(
-                              title: "Lupa password?",
-                              textContent:
-                                  "Jangan khawatir, coba ingat-ingat kembali kemudian coba login ulang",
-                            ).info;
-                          },
-                        );
+                        Get.dialog(InformationAlert(
+                          title: "Lupa password?",
+                          textContent:
+                              "Jangan khawatir, coba ingat-ingat kembali kemudian coba login ulang",
+                        ).info);
                       },
                       child: Text("Lupa Password?"),
                     ),
@@ -151,40 +133,34 @@ class _LoginPageState extends State<LoginPage> implements LoginViewContract {
   @override
   void onLoginFailed(String message) {
     // TODO: implement onLoginFailed
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return InformationAlert(
-          textContent: message,
-          title: "Kesalahan",
-        ).danger;
-      },
-    );
+    Get.dialog(InformationAlert(
+      textContent: message,
+      title: "Kesalahan",
+    ).danger);
   }
 
   @override
   void onLoginSuccess(Map loginData) {
     // TODO: implement onLoginSuccess
     if (loginData['login_status']) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return InformationAlert(
-            textContent: loginData['login_message'],
-            title: "Login",
-          ).success;
+      Get.dialog(
+        InformationAlert(
+          textContent: loginData['login_message'],
+          title: "Login",
+        ).success,
+      ).then(
+        (value) {
+          loginpresenter.isAuthenticate.value = true;
+          loginpresenter.email.value = loginData['login_data']['user_email'];
+          loginpresenter.username.value = loginData['login_data']['user_name'];
+          Get.offNamed('/');
         },
       );
     } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return InformationAlert(
-            textContent: loginData['login_message'],
-            title: "Login",
-          ).warning;
-        },
-      );
+      Get.dialog(InformationAlert(
+        textContent: loginData['login_message'],
+        title: "Login",
+      ).warning);
     }
   }
 }
