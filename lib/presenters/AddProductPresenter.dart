@@ -15,12 +15,16 @@ class AddProductPresenter extends GetxController {
   }
 
   void saveProduct(String productName, String productPrice,
-      String productDescription, String category, List<int> imagePath) {
+      String productDescription, String category, String imagePath) {
     _productService
         .saveProduct(
             productName, productPrice, productDescription, category, imagePath)
-        .then((value) => _addProductViewContract.onProductSaveSuccess(value))
-        .catchError((message) {
+        .then(
+      (value) {
+        _addProductViewContract.onProductSaveSuccess(value['message']);
+        print(value['message']);
+      },
+    ).catchError((message) {
       _addProductViewContract.onProductSaveFailed(message.toString());
     });
   }

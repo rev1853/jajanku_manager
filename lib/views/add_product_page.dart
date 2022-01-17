@@ -13,6 +13,7 @@ import 'package:jajanku_manager/constants/ColorConstant.dart';
 import 'package:jajanku_manager/constants/HTTPConstant.dart';
 import 'package:jajanku_manager/contracts/AddProductViewContract.dart';
 import 'package:jajanku_manager/presenters/AddProductPresenter.dart';
+import 'package:jajanku_manager/presenters/NavigationPresenter.dart';
 import 'package:jajanku_manager/widgets/alert.dart';
 import 'package:jajanku_manager/widgets/form_text_field.dart';
 import 'package:jajanku_manager/widgets/select_box.dart';
@@ -26,13 +27,14 @@ class AddProductPage extends StatelessWidget implements AddProductViewContract {
 
   final _formKey = GlobalKey<FormState>();
   final _addProductPresenter = Get.put(AddProductPresenter());
+  final _navigationPresenter = Get.find<NavigationPresenter>();
 
   final _namaProduk = TextEditingController();
   final _hargaProduk = TextEditingController();
   final _deskripsiProduk = TextEditingController();
   final _gambarProduk = TextEditingController();
   final _kategoriProduk = BsSelectBoxController();
-  List<int> _gambar = Uint8List(0);
+  File? _gambar;
 
   @override
   Widget build(BuildContext context) {
@@ -131,9 +133,8 @@ class AddProductPage extends StatelessWidget implements AddProductViewContract {
                         final XFile? image = await _picker.pickImage(
                           source: ImageSource.gallery,
                         );
-
-                        _gambar = await image!.readAsBytes();
-                        print(_gambar);
+                        _gambarProduk.text = image!.name;
+                        _gambar = File(image.path);
                       },
                       child: Text(
                         "Pilih",
@@ -166,7 +167,7 @@ class AddProductPage extends StatelessWidget implements AddProductViewContract {
                               productPrice,
                               productDescription,
                               category,
-                              _gambar);
+                              _gambar!.path);
                         },
                       ),
                     ),
@@ -229,5 +230,6 @@ class AddProductPage extends StatelessWidget implements AddProductViewContract {
       textContent: message,
       title: "Simpan Data",
     ).success);
+    _navigationPresenter.changeIndex = 1;
   }
 }

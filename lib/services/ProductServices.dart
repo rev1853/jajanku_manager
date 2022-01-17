@@ -32,27 +32,24 @@ class ProductService {
     return data["message"] ?? "";
   }
 
-  Future<String> saveProduct(String productName, String productPrice,
-      String productDescription, String category, List<int> imagePath) async {
-    String image = base64Encode(imagePath);
-    print(image);
-
+  Future<Map> saveProduct(String productName, String productPrice,
+      String productDescription, String category, String imagePath) async {
     Map<String, String> data = {
       'product_name': productName,
       'product_price': productPrice,
       'product_description': productDescription,
       'category_id': category,
     };
-    // var url = Uri.http(BASE_URL + "/add", "", data);
-    // var response = await http.get(url, headers: {
-    //   HttpHeaders.contentTypeHeader: "application/json",
-    // });
     var url = Uri.parse(BASE_URL + "/add");
-    var response = await http.post(
-      url,
-      body: jsonEncode(data),
-    );
-    print(jsonEncode(data));
-    return response.body;
+
+    var request = await http.MultipartRequest("POST", url)
+      ..fields.addAll(data)
+      ..files.add(
+        await http.MultipartFile.fromPath("product_image", imagePath),
+      );
+    var res = await request.send();
+
+    var response = await http.Response.fromStream(res);
+    return jsonDecode(response.body);
   }
 }
