@@ -6,25 +6,28 @@ import 'package:jajanku_manager/constants/ColorConstant.dart';
 class FormTextField extends StatelessWidget {
   FormTextField({
     Key? key,
-    required this.controller,
+    this.controller,
     required this.label,
-    required this.validator,
+    this.validator,
     this.isPassword = false,
+    this.isEnabled = true,
     this.isNumber = false,
     this.maxLine = 1,
   }) : super(key: key);
 
-  TextEditingController controller;
+  TextEditingController? controller;
   String label;
   String? Function(String?)? validator;
   final FocusNode _focusNode = FocusNode();
   bool isPassword;
   bool isNumber;
+  bool isEnabled;
   int maxLine;
 
   @override
   TextFormField build(BuildContext context) {
     return TextFormField(
+      enabled: isEnabled,
       maxLines: maxLine,
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
       obscureText: isPassword,
@@ -50,6 +53,7 @@ class FormTextField extends StatelessWidget {
           vertical: 12,
         ),
         enabledBorder: createBorder(DARK),
+        disabledBorder: createBorder(DARK),
         focusedBorder: createBorder(GREEN),
         errorBorder: createBorder(RED),
         focusedErrorBorder: createBorder(RED),

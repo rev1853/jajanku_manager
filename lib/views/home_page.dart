@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jajanku_manager/constants/ColorConstant.dart';
 import 'package:jajanku_manager/presenters/NavigationPresenter.dart';
+import 'package:jajanku_manager/views/add_product_page.dart';
 import 'package:jajanku_manager/views/edit_product_page.dart';
 import 'package:jajanku_manager/views/product_page.dart';
 import 'package:jajanku_manager/widgets/bottom_navbar.dart';
@@ -43,6 +44,7 @@ class HomePage extends StatelessWidget {
               Screen3(),
               Screen4(),
               EditProductPage(id: navigationPresenter.data['id'] ?? "0"),
+              AddProductPage(),
             ],
           ),
         ),

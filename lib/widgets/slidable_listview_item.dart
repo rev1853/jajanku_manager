@@ -74,10 +74,10 @@ class SlidableItem extends StatelessWidget {
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
-          child: Image.network(image ?? ""),
+          child: Image.network(image),
         ),
         trailing: Text(
-          "Rp.${price}",
+          "Rp." + price,
           style: GoogleFonts.roboto(
             color: BLUE,
             fontWeight: FontWeight.bold,

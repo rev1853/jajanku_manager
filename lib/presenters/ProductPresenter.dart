@@ -20,6 +20,19 @@ class ProductPresenter extends GetxController {
     );
   }
 
+  void deleteProduct(String id) async {
+    _productService
+        .deleteProduk(id)
+        .then(
+          (value) => _productViewContract.onDeleteSuccess(value),
+        )
+        .catchError(
+      (message) {
+        _productViewContract.onDeleteError(message.toString());
+      },
+    );
+  }
+
   set productViewContract(ProductViewContract productViewContract) {
     _productViewContract = productViewContract;
   }

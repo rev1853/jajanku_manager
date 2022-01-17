@@ -8,6 +8,7 @@ import 'package:jajanku_manager/contracts/ProductViewContract.dart';
 import 'package:jajanku_manager/models/Product.dart';
 import 'package:jajanku_manager/presenters/NavigationPresenter.dart';
 import 'package:jajanku_manager/presenters/ProductPresenter.dart';
+import 'package:jajanku_manager/widgets/alert.dart';
 import 'package:jajanku_manager/widgets/slidable_listview_item.dart';
 
 class ProductPage extends StatelessWidget implements ProductViewContract {
@@ -61,7 +62,9 @@ class ProductPage extends StatelessWidget implements ProductViewContract {
                     Row(
                       children: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            navigationPresenter.changeIndex = 5;
+                          },
                           child: Text(
                             "Tambah Baru",
                             style: GoogleFonts.roboto(),
@@ -93,7 +96,10 @@ class ProductPage extends StatelessWidget implements ProductViewContract {
                     price: product.productPrice ?? "0",
                     index: index,
                     image: product.productImage ?? "",
-                    onDelete: (BuildContext context) {},
+                    onDelete: (BuildContext context) {
+                      print("asdfa");
+                      productPresenter.deleteProduct(product.productId ?? "0");
+                    },
                     onDetail: (BuildContext context) {},
                     onEdit: (BuildContext context) {
                       navigationPresenter.withData = {"id": product.productId};
@@ -130,5 +136,24 @@ class ProductPage extends StatelessWidget implements ProductViewContract {
   void onFetchSuccess(List<Product> products) {
     // TODO: implement onFetchSuccess
     this.products.value = products;
+  }
+
+  @override
+  void onDeleteError(String message) {
+    // TODO: implement onDeleteError
+    Get.dialog(InformationAlert(
+      textContent: message,
+      title: "hapus Data",
+    ).success);
+  }
+
+  @override
+  void onDeleteSuccess(String message) {
+    // TODO: implement onDeleteSuccess
+    Get.dialog(InformationAlert(
+      textContent: message,
+      title: "hapus Data",
+    ).success);
+    productPresenter.loadProduct();
   }
 }
