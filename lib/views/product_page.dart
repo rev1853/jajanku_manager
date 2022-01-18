@@ -97,10 +97,12 @@ class ProductPage extends StatelessWidget implements ProductViewContract {
                     index: index,
                     image: product.productImage ?? "",
                     onDelete: (BuildContext context) {
-                      print("asdfa");
                       productPresenter.deleteProduct(product.productId ?? "0");
                     },
-                    onDetail: (BuildContext context) {},
+                    onDetail: (BuildContext context) {
+                      navigationPresenter.withData = {"id": product.productId};
+                      navigationPresenter.changeIndex = 6;
+                    },
                     onEdit: (BuildContext context) {
                       navigationPresenter.withData = {"id": product.productId};
                       navigationPresenter.changeIndex = 4;

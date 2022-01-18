@@ -29,7 +29,7 @@ class SlidableItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Slidable(
       key: ValueKey(index),
-      startActionPane: ActionPane(
+      endActionPane: ActionPane(
         motion: ScrollMotion(),
         dismissible: null,
         extentRatio: 0.75,
