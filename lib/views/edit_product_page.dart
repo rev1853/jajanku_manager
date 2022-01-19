@@ -271,5 +271,6 @@ class EditProductPage extends StatelessWidget
       textContent: message,
       title: "Edit Data",
     ).success);
+    _navigationPresenter.changeIndex = 1;
   }
 }
